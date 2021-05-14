@@ -16,8 +16,26 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        $products = Product::paginate(15);
-        return view('products.index',compact('products'));
+        if ($request->category !== null){
+            //絞り込みたいカテゴリーIDをもつ商品データを取得する。一覧表示の際に１５パージを指定する
+            $products = Product::where('category_id',$request->category)->paginate(15);
+            $category = Category::find($request->category);
+
+        } else {
+            //一覧表示の際に１５パージを指定する
+            $products = Product::paginate(15);
+            $category = null;
+        }
+
+
+        //カテゴリーテーブルから全ての情報を取り出して$categories変数に代入する
+        $categories = Category::all();
+
+        $major_category_names = Category::pluck('major_category_name')->unique();
+
+
+        //index.blade.php（ビュー）に変数$products,$categories,major_category_namesをcompact関数を使って返す
+        return view('products.index',compact('products', 'category' ,'categories','major_category_names'));
     }
 
     public function favorite(Product $product)
