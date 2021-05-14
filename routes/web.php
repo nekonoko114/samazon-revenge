@@ -16,6 +16,10 @@ Route::get('/', function () {
 });
 
 
+//レビューの登録
+Route::post('products/{product}/reviews','ReviewController@store');
+
+//プロダクトコントローラーの呼び出し
 Route::resource('products','ProductController');
 
 Auth::routes([['verify' => true]]);

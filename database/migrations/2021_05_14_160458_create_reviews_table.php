@@ -15,6 +15,9 @@ class CreateReviewsTable extends Migration
     {
         Schema::create('reviews', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->text('content');
+            $table->integer('product_id');
+            $table->integer('user_id');
             $table->timestamps();
         });
     }
