@@ -11,6 +11,8 @@
 |
 */
 
+use App\Http\Controllers\ProductController;
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -18,6 +20,11 @@ Route::get('/', function () {
 
 //レビューの登録
 Route::post('products/{product}/reviews','ReviewController@store');
+
+//お気にり済かどうかテェックする  一緒にユーザーであるか確認をする
+//お気に入りされていれば 「テェックを外す」
+//お気に入りされていなければ追加する
+Route::get('products/{product}/favorite','ProductController@favorite')->name('products.favorite');
 
 //プロダクトコントローラーの呼び出し
 Route::resource('products','ProductController');
