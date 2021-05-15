@@ -16,16 +16,38 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
+        //sort機能の実装
+        //$sort_queryにからの配列を代入
+        $sort_query = [];
+        //$sortedにからのコンテンツを代入
+        $sorted  = "";
+
+        if ($request->sort !== null){
+            $slice = explode(' ',$request->sort );
+            $sort_query[$slice[0]] = $slice[1];
+            $sorted = $request->sort;
+        }
+
         if ($request->category !== null){
             //絞り込みたいカテゴリーIDをもつ商品データを取得する。一覧表示の際に１５パージを指定する
-            $products = Product::where('category_id',$request->category)->paginate(15);
+            $products = Product::where('category_id',$request->category)->sortable($sort_query)->paginate(15);
             $category = Category::find($request->category);
 
         } else {
             //一覧表示の際に１５パージを指定する
-            $products = Product::paginate(15);
+            $products = Product::sortable($sort_query)->paginate(15);
             $category = null;
         }
+
+        $sort = [
+            '並び替え'  => '',
+            '価格の安い順' => 'price asc',
+            '価格の高い順' => 'price desc',
+            '出品の古い順' => 'update_at asc',
+            '出品のお新しい順' => 'audate_at desc',
+        ];
+
+
 
 
         //カテゴリーテーブルから全ての情報を取り出して$categories変数に代入する
@@ -35,7 +57,7 @@ class ProductController extends Controller
 
 
         //index.blade.php（ビュー）に変数$products,$categories,major_category_namesをcompact関数を使って返す
-        return view('products.index',compact('products', 'category' ,'categories','major_category_names'));
+        return view('products.index',compact('products', 'category' ,'categories','major_category_names' , 'sort','sorted'));
     }
 
     public function favorite(Product $product)
