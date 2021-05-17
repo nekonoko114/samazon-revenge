@@ -33,14 +33,20 @@
                 <a class="nav-link" href="{{ route('login') }}"><i class="fas fa-shopping-cart"></i></a>
             </li>
             @else
-            <li class="nav-item mr-5">
-                <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                    ログアウト
+            <li class='nav-item mr-5'>
+                <a href="{{ route('mypage') }}" class="nav-link">
+                    <i class="fas fa-user mr-1"></i><label>マイページ</label>
                 </a>
-
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                    @csrf
-                </form>
+            </li>
+            <li class="nav-item mr-5">
+                <a href="{{ route('mypage.favorite') }}" class="nav-link">
+                    <i class="far fa-heart"></i>
+                </a>
+            </li>
+            <li class="nav-item mr-5">
+                <a href="{{ route('carts.index') }}" class="nav-link">
+                    <i class="fas fa-shopping-cart"></i>
+                </a>
             </li>
             @endguest
         </ul>
